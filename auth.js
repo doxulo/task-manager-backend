@@ -46,4 +46,17 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+const verifyToken = (req, res) => {
+    const { token } = req.body;
+    if (!token) {
+        return res.status(400).json({ valid: false });
+    }
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ valid: false });
+        }
+        res.json({ valid: true });
+    });
+};
+
+module.exports = { registerUser, loginUser, verifyToken };
