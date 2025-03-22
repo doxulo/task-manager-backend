@@ -3,6 +3,7 @@ const { Server } = require('socket.io');
 const http = require('http');
 const cors = require('cors');
 require('dotenv').config();
+const { registerUser, loginUser } = require('./auth');
 
 const app = express();
 app.use(cors());
@@ -38,6 +39,10 @@ app.get('/test', async (req, res) => {
         res.status(500).send('Error ' + err);
     }
 });
+
+// Add user registration and login routes
+app.post('/register', registerUser);
+app.post('/login', loginUser);
 
 // Socket.IO connection
 io.on('connection', (socket) => {
